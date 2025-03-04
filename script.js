@@ -955,6 +955,8 @@ const getTarget = (() => {
 		target.hit = false;
 		target.maxHealth = maxHealth;
 		target.health = health;
+		const images = [image1, image2, image3, image4];
+		target.image = images[Math.floor(Math.random() * images.length)];
 		updateTargetHealth(target, 0);
 
 		const spinSpeeds = [
@@ -1109,6 +1111,7 @@ const createBurst = (() => {
 			const normal = positionNormals[i];
 
 			const frag = getFragForTarget(target);
+			frag.image = target.image; // Assign the same image as the target
 
 			frag.x = position.x;
 			frag.y = position.y;
@@ -1233,19 +1236,38 @@ function setHudVisibility(visible) {
 ///////////
 // Score //
 ///////////
+
 const scoreNode = $('.score-lbl');
 const cubeCountNode = $('.cube-count-lbl');
 
+// Load the logo image
+const logoSrc = 'L01.png';
+let logoImage;
+
+loadImage(logoSrc)
+    .then(img => {
+        logoImage = img;
+        // Create an image element for the logo
+        const logoElement = document.createElement('img');
+        logoElement.src = logoSrc;
+        logoElement.classList.add('logo-img');
+        // Append the logo image to the score container
+        scoreNode.parentElement.insertBefore(logoElement, scoreNode);
+    })
+    .catch(err => {
+        console.error('Failed to load logo image', err);
+    });
+
 function renderScoreHud() {
-	if (isCasualGame()) {
-		scoreNode.style.display = 'none';
-		cubeCountNode.style.opacity = 1;
-	} else {
-		scoreNode.innerText = `SCORE: ${state.game.score}`;
-		scoreNode.style.display = 'block';
-		cubeCountNode.style.opacity = 0.65 ;
-	}
-	cubeCountNode.innerText = `CUBES SMASHED: ${state.game.cubeCount}`;
+    if (isCasualGame()) {
+        scoreNode.style.display = 'none';
+        cubeCountNode.style.opacity = 1;
+    } else {
+        scoreNode.innerText = `SCORE: ${state.game.score}`;
+        scoreNode.style.display = 'block';
+        cubeCountNode.style.opacity = 0.65;
+    }
+    cubeCountNode.innerText = `SOON SMASHED: ${state.game.cubeCount}`;
 }
 
 renderScoreHud();
@@ -1340,11 +1362,11 @@ handleClick($('.play-normal-btn'), () => {
 	resetGame();
 });
 
-handleClick($('.play-casual-btn'), () => {
-	setGameMode(GAME_MODE_CASUAL);
-	setActiveMenu(null);
-	resetGame();
-});
+// handleClick($('.play-casual-btn'), () => {
+// 	setGameMode(GAME_MODE_CASUAL);
+// 	setActiveMenu(null);
+// 	resetGame();
+// });
 
 // Pause Menu
 handleClick($('.resume-btn'), () => resumeGame());
@@ -1372,11 +1394,11 @@ handleClick($('.play-normal-btn'), () => {
 	resetGame();
 });
 
-handleClick($('.play-casual-btn'), () => {
-	setGameMode(GAME_MODE_CASUAL);
-	setActiveMenu(null);
-	resetGame();
-});
+// handleClick($('.play-casual-btn'), () => {
+// 	setGameMode(GAME_MODE_CASUAL);
+// 	setActiveMenu(null);
+// 	resetGame();
+// });
 
 // Pause Menu
 handleClick($('.resume-btn'), () => resumeGame());
@@ -1868,17 +1890,47 @@ function draw(ctx, width, height, viewScale) {
 
     // Draw targets as images
     targets.forEach(target => {
-        if (image) {
-            drawImage(ctx, image, target.projected.x - targetRadius, target.projected.y - targetRadius, targetRadius * 2, targetRadius * 2);
+        if (target.image) {
+            drawImage(ctx, target.image, target.projected.x - targetRadius * 3, target.projected.y - targetRadius * 3, targetRadius * 5, targetRadius * 5);
         }
     });
 
     // Draw fragments as images
     frags.forEach(frag => {
-        if (image) {
-            drawImage(ctx, image, frag.projected.x - fragRadius, frag.projected.y - fragRadius, fragRadius * 2, fragRadius * 2);
+        if (frag.image) {
+            drawImage(ctx, frag.image, frag.projected.x - fragRadius * 3, frag.projected.y - fragRadius * 3, fragRadius * 5, fragRadius * 5);
         }
     });
+
+    // 2D Sparks
+    // ---------------
+    ctx.strokeStyle = sparkColor;
+    ctx.lineWidth = sparkThickness;
+    ctx.beginPath();
+    sparks.forEach(spark => {
+        ctx.moveTo(spark.x, spark.y);
+        const scale = (spark.life / spark.maxLife) ** 0.5 * 1.5;
+        ctx.lineTo(spark.x - spark.xD * scale, spark.y - spark.yD * scale);
+    });
+    ctx.stroke();
+
+    // Touch Strokes
+    // ---------------
+    ctx.strokeStyle = touchTrailColor;
+    const touchPointCount = touchPoints.length;
+    for (let i = 1; i < touchPointCount; i++) {
+        const current = touchPoints[i];
+        const prev = touchPoints[i - 1];
+        if (current.touchBreak || prev.touchBreak) {
+            continue;
+        }
+        const scale = current.life / touchPointLife;
+        ctx.lineWidth = scale * touchTrailThickness;
+        ctx.beginPath();
+        ctx.moveTo(prev.x, prev.y);
+        ctx.lineTo(current.x, current.y);
+        ctx.stroke();
+    }
 
     PERF_END('draw');
     PERF_END('frame');
@@ -2071,6 +2123,8 @@ if ('PointerEvent' in window) {
 
 
 
+
+
 // index.js
 // ============================================================================
 // ============================================================================
@@ -2086,13 +2140,21 @@ function loadImage(src) {
 }
 
 // Example usage
-const imageSrc = '01.gif';
-let image;
+const imageSrc1 = '05.png';
+const imageSrc2 = '02.gif';
+const imageSrc3 = '03.png';
+const imageSrc4 = '04.png';
+let image1, image2,image3,image4;
 
-loadImage(imageSrc).then(img => {
-    image = img;
-}).catch(err => {
-    console.error('Failed to load image', err);
-});
+Promise.all([loadImage(imageSrc1), loadImage(imageSrc2),loadImage(imageSrc3),loadImage(imageSrc4)])
+    .then(([img1, img2,img3,img4]) => {
+        image1 = img1;
+        image2 = img2;
+		image3 = img3;
+		image4 = img4
+    })
+    .catch(err => {
+        console.error('Failed to load images', err);
+    });
 
 setupCanvases();
