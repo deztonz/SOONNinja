@@ -3,7 +3,7 @@
 ---
 
 ## **Description 📃**
-Block Ninja is an engaging and addictive game where players must slash through blocks that appear on the screen while avoiding dangerous obstacles. The game tests your reflexes and precision as you aim to score the highest points by slicing through as many blocks as possible. The challenge increases with each level, making it an exciting experience for players of all ages.
+SOON Ninja is an engaging and addictive game where players must slash through blocks that appear on the screen while avoiding dangerous obstacles. The game tests your reflexes and precision as you aim to score the highest points by slicing through as many blocks as possible. The challenge increases with each level, making it an exciting experience for players of all ages.
 
 ## **Functionalities 🎮**
 - **Start Game:** Begin a new game session.
@@ -16,7 +16,7 @@ Block Ninja is an engaging and addictive game where players must slash through b
 
 ## **How to Play? 🕹️**
 1. **Launch the Game:**
-   - Open the Block Ninja game application on your device.
+   - Open the SOON Ninja game application on your device.
    
 2. **Start a New Game:**
    - Click on the "Start Game" button to begin.
@@ -47,7 +47,7 @@ Block Ninja is an engaging and addictive game where players must slash through b
 
 ---
 
-Enjoy slicing through blocks and mastering the art of the Block Ninja! Can you achieve the highest score and become the ultimate ninja?
+Enjoy slicing through blocks and mastering the art of the SOON Ninja! Can you achieve the highest score and become the ultimate ninja?
 
 
 ## **Screenshots 📸**
