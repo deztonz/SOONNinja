@@ -51,8 +51,3 @@ Enjoy slicing through soon and mastering the art of the SOON Ninja! Can you achi
 
 ## for contribute 
 By Yoiiz
-
-![image](../../assets/images/Block_Ninja.png)
-
-<br>
-
