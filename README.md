@@ -1,4 +1,4 @@
-# **Block Ninja**
+# **SOON Ninja**
 
 ---
 
@@ -47,11 +47,10 @@ SOON Ninja is an engaging and addictive game where players must slash through bl
 
 ---
 
-Enjoy slicing through blocks and mastering the art of the SOON Ninja! Can you achieve the highest score and become the ultimate ninja?
+Enjoy slicing through soon and mastering the art of the SOON Ninja! Can you achieve the highest score and become the ultimate ninja?
 
-
-## **Screenshots 📸**
-
+## for contribute 
+By Yoiiz
 
 ![image](../../assets/images/Block_Ninja.png)
 
